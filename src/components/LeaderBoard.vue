@@ -110,5 +110,4 @@ export default {
   .i5:hover{
     background-color: #b94f4f;
   }
-
 </style>
