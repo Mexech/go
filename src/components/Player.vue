@@ -1,16 +1,12 @@
 <template>
-    <div class = "player-info" v-bind:class="cls">
+    <div class = "player-info" v-bind:class="cls" v-on:click="show()">
         <div style = "width: 50%;">
             <span class="index"> {{pos}} </span>
             <span>{{name}}</span> 
         </div>
-        <div>
-            <button v-on:click="show()">Text</button>
-        </div>
     </div>
-    <div style = "display: flex;">
-        <div v-bind:class="dynamicCls">
-        {{name}}
+    <div>
+        <div v-bind:class="dynamicCls" style = "opacity: 0; visibility: hidden;">
         </div>
     </div>
 </template>
@@ -109,9 +105,6 @@ export default{
   }
 
   .dropdown{
-       opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-      animation: fade 2s linear forwards;
+      /* height: 50px; */
   }
 </style>
