@@ -1,53 +1,162 @@
 <template>
-  <h1>ТОП 100 ЧЕЛОВ</h1>
-  <ul>
-      <li v-for="(player, index) in players" :key="index" v-bind:class="'i' + (index + 1)">
+  <div class="main">
+    <v-popup
+            v-if="isInfoPopupVisible"
+            @closePopup="closeInfoPopup"
+    />
+    <h1>ТОП 100 ЧЕЛОВ</h1>
+    <ul>
+      <li class="i1" @click="showPopupInfo">
+        <span class="index"> 1 </span>
+        <span>player</span>
+      </li>
+      <li class="i2" @click="showPopupInfo">
+        <span class="index"> 2 </span>
+        <span>player</span>
+      </li>
+      <li class="i3" @click="showPopupInfo">
+        <span class="index"> 3 </span>
+        <span>player</span>
+      </li>
+      <li class="i4" @click="showPopupInfo">
+        <span class="index"> 4 </span>
+        <span>player</span>
+      </li>
+      <li class="i5" @click="showPopupInfo">
+        <span class="index"> 5 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+      <li class="i10" @click="showPopupInfo">
+        <span class="index"> 10 </span>
+        <span>player</span>
+      </li>
+
+      <li v-for="(player, index) in players" :key="index"
+          v-bind:class="'i' + (index + 1)"
+          @click="showPopupInfo"
+      >
         <span class="index"> {{index + 1}} </span>
         <span>{{player}}</span>
       </li>
-  </ul>
+    </ul>
+  </div>
 </template>
 
 <script>
-export default {
-  el: "#leaderboard",
-  data() {
-    return {
-      players: [],
-    }
-  },
-  mounted(){
-    this.fetchLeaderboard()
-  },
-  methods: {
-    fetchLeaderboard(){
-      let xhr = new XMLHttpRequest();
-      var self = this;
-      xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
-      xhr.send();
-      xhr.onload = function() {
-        if (xhr.status != 200) { 
-          alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); 
-        } else {
-          const parser = new DOMParser();
-          const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
-          leaderboardDOM.getElementsByTagName('a').forEach((playerEntry) => {
-            if (playerEntry.innerText) {
-              self.players.push(playerEntry.innerText)
-            }
-          })
+  import vPopup from './v-popup.vue'
+
+  export default {
+    el: "#leaderboard",
+    components: {
+      vPopup
+    },
+    data() {
+      return {
+        players: [],
+        isInfoPopupVisible: false,
+      }
+    },
+    mounted() {
+      this.fetchLeaderboard()
+    },
+    methods: {
+      fetchLeaderboard() {
+        let xhr = new XMLHttpRequest();
+        var self = this;
+        xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
+        xhr.send();
+        xhr.onload = function () {
+          if (xhr.status != 200) {
+            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+          } else {
+            const parser = new DOMParser();
+            const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
+            leaderboardDOM.getElementsByTagName('a').forEach((playerEntry) => {
+              if (playerEntry.innerText) {
+                self.players.push(playerEntry.innerText)
+              }
+            })
+          }
         }
+      },
+      showPopupInfo() {
+        this.isInfoPopupVisible = true;
+        const body = document.body;
+        body.style.height = "100vh"
+        body.style.overflowY = "hidden";
+      },
+      closeInfoPopup() {
+        this.isInfoPopupVisible = false;
+        const body = document.body;
+        body.style.height = "100vh"
+        body.style.overflowY = "visible";
       }
     }
   }
-}
 </script>
 
 <style scoped>
-  ul{
+  ul {
     padding-left: 0;
   }
-  li{
+
+  li {
     list-style-type: none;
     font-size: 18px;
     text-align: left;
@@ -55,59 +164,59 @@ export default {
     line-height: 50px;
   }
 
-  li:hover{
+  li:hover {
     background-color: #393f49;
     cursor: pointer;
   }
 
-  .index{
+  .index {
     margin: 0 20px 0 20px;
     color: rgb(178, 114, 119);
     border-radius: 20px;
     background-color: white;
-    padding-right: 5px;
+    padding-right: 0px;
     padding-left: 5px;
     user-select: none;
   }
 
-  .i1{
+  .i1 {
     background-color: #db705b;
   }
 
-  .i1:hover{
+  .i1:hover {
     background-color: #df735f;
   }
 
-  .i2{
+  .i2 {
     background-color: #d16155;
   }
 
-  .i2:hover{
+  .i2:hover {
     background-color: #d36357;
   }
 
-  .i3{
+  .i3 {
     background-color: #c85952;
   }
 
-  .i3:hover{
+  .i3:hover {
     background-color: #ca5b54;
   }
 
-  .i4{
+  .i4 {
     background-color: #c0544e;
   }
 
-  .i4:hover{
+  .i4:hover {
     background-color: #c3574f;
   }
 
-  .i5{
+  .i5 {
     background-color: #b44c4c;
     border-radius: 0 0 10px 10px;
   }
 
-  .i5:hover{
+  .i5:hover {
     background-color: #b94f4f;
   }
 
