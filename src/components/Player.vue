@@ -5,9 +5,16 @@
             <span>{{name}}</span> 
         </div>
     </div>
-    <div>
-        <div v-bind:class="dynamicCls" style = "opacity: 0; visibility: hidden;">
+    <div v-bind:class="[dynamicCls]">
+      <div class = "dropdown-content">
+        <div class = "section">
+          <p>{{name}} vs хз-кто</p>
         </div>
+        <div class = "divider"></div>
+        <div class = "section">
+          <p>{{name}} vs хз-кто</p>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -22,12 +29,12 @@ export default{
     },
     data() {
         return{
-            dynamicCls: ""
+            dynamicCls: "dropdown"
         }
     },
     methods: {
         show(){
-            this.dynamicCls === "dropdown" ? this.dynamicCls = "": this.dynamicCls = "dropdown"
+            this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
         }
     }
 }
@@ -105,6 +112,37 @@ export default{
   }
 
   .dropdown{
-      /* height: 50px; */
+    opacity: 0;
+    visibility: hidden;
+    height: 0px;
+    transition: all 0.3s;
+    background-color: white;
+  }
+
+  .dropdown-show{
+    height: 50px;
+    transition: all 0.3s;
+    font-size: 18px;
+    color: black;
+  }
+
+  .dropdown-content{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .section{
+    flex: 1 1 auto;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .divider{
+    height: 50px;
+    width: 1.6px;
+    background-color: silver;
   }
 </style>
