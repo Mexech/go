@@ -1,15 +1,21 @@
 <template>
-  <h1>ТОП 100 ЧЕЛОВ</h1>
-  <ul>
-      <li v-for="(player, index) in players" :key="index" v-bind:class="'i' + (index + 1)">
-        <span class="index"> {{index + 1}} </span>
-        <span>{{player}}</span>
-      </li>
-  </ul>
+  <div id = "leaderboard">
+    <div id = "header">
+      <h1>ТОП 100 ЧЕЛОВ</h1>
+    </div>
+    <div id = "players-list" v-for="(player, index) in players" :key="index">
+      <Player :cls="'i' + (index + 1)" :pos="index + 1" :name="player"/>
+    </div>
+  </div>
 </template>
 
 <script>
+import Player from "./Player.vue"
+
 export default {
+  components: {
+    Player
+  },
   el: "#leaderboard",
   data() {
     return {
@@ -43,72 +49,22 @@ export default {
 }
 </script>
 
-<style scoped>
-  ul{
-    padding-left: 0;
-  }
-  li{
-    list-style-type: none;
-    font-size: 18px;
-    text-align: left;
-    height: 50px;
-    line-height: 50px;
+<style>
+  html, body{margin: 0; padding: 0;}
+
+  #players-list{
+    display: flex;
+    flex-direction: column;
   }
 
-  li:hover{
-    background-color: #393f49;
-    cursor: pointer;
+  #leaderboard{
+    padding-left: 15%;
+    padding-right: 15%;
+    display: flex;
+    flex-direction: column;
   }
 
-  .index{
-    margin: 0 20px 0 20px;
-    color: rgb(178, 114, 119);
-    border-radius: 20px;
-    background-color: white;
-    padding-right: 5px;
-    padding-left: 5px;
-    user-select: none;
+  #header{
+    background-color: #373d47;
   }
-
-  .i1{
-    background-color: #db705b;
-  }
-
-  .i1:hover{
-    background-color: #df735f;
-  }
-
-  .i2{
-    background-color: #d16155;
-  }
-
-  .i2:hover{
-    background-color: #d36357;
-  }
-
-  .i3{
-    background-color: #c85952;
-  }
-
-  .i3:hover{
-    background-color: #ca5b54;
-  }
-
-  .i4{
-    background-color: #c0544e;
-  }
-
-  .i4:hover{
-    background-color: #c3574f;
-  }
-
-  .i5{
-    background-color: #b44c4c;
-    border-radius: 0 0 10px 10px;
-  }
-
-  .i5:hover{
-    background-color: #b94f4f;
-  }
-
 </style>
