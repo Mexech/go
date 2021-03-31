@@ -15,6 +15,7 @@
 <script>
   export default {
     name: "v-popup",
+    emits: ['closePopup'],
     methods: {
       closePopup() {
         this.$emit('closePopup')
