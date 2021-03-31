@@ -7,11 +7,11 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
-        <div class = "section">
+        <div @click="emitShowModal" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
         <div class = "divider"></div>
-        <div class = "section">
+        <div @click="emitShowModal" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
       </div>
@@ -22,6 +22,7 @@
 
 export default{
     name: "Player",
+    emits: ['showModal'],
     props: {
         pos: Number,
         name: String,
@@ -35,6 +36,9 @@ export default{
     methods: {
         show(){
             this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
+        },
+        emitShowModal(){
+          this.$emit("showModal")
         }
     }
 }
