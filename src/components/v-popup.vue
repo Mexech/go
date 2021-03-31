@@ -9,7 +9,7 @@
     </div>
     <div class="v-popup__footer"></div>
   </div>
-  <div id="bg_layer"></div>
+  <div id="bg_layer" @click="closePopup"></div>
 </template>
 
 <script>
@@ -64,6 +64,7 @@
     height: 100%;
     background: #000;
     opacity: 0.5;
+    /*cursor: pointer;*/
   }
 
   #close_btn {
