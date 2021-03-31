@@ -1,48 +1,44 @@
 <template>
   <div class="main">
-    <v-popup
+    <v-popup 
             v-if="isInfoPopupVisible"
             @closePopup="closeInfoPopup"
     />
     <h1>ТОП 100 ЧЕЛОВ</h1>
-    <ul>
-      <li v-for="(player, index) in players" :key="index"
-          v-bind:class="'i' + (index + 1)"
-          @click="showPopupInfo"
-      >
-        <span class="index"> {{index + 1}} </span>
-        <span>{{player}}</span>
-      </li>
-    </ul>
+    <div id = "players-list" v-for="(player, index) in players" :key="index">
+      <Player @showModal="showPopupInfo"  :cls="'i' + (index + 1)" :pos="index + 1" :name="player"/>
+    </div>
   </div>
 </template>
 
 <script>
-  import vPopup from './v-popup.vue'
+import Player from "./Player.vue"
+import vPopup from "./v-popup.vue"
 
-  export default {
-    el: "#leaderboard",
-    components: {
-      vPopup
-    },
-    data() {
-      return {
-        players: [],
-        isInfoPopupVisible: false,
-      }
-    },
-    mounted() {
-      this.fetchLeaderboard()
-    },
-    methods: {
-      fetchLeaderboard() {
+export default {
+  components: {
+    Player,
+    vPopup
+  },
+  el: "#leaderboard",
+  data() {
+    return {
+      players: [],
+      isInfoPopupVisible: false
+    }
+  },
+  mounted(){
+    this.fetchLeaderboard()
+  },
+  methods: {
+      fetchLeaderboard(){
         let xhr = new XMLHttpRequest();
         var self = this;
         xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
         xhr.send();
-        xhr.onload = function () {
-          if (xhr.status != 200) {
-            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`);
+        xhr.onload = function() {
+          if (xhr.status != 200) { 
+            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); 
           } else {
             const parser = new DOMParser();
             const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
@@ -56,15 +52,11 @@
       },
       showPopupInfo() {
         this.isInfoPopupVisible = true;
-        const body = document.body;
-        body.style.height = "100vh"
-        body.style.overflowY = "hidden";
+        document.body.style.overflowY = "hidden";
       },
       closeInfoPopup() {
         this.isInfoPopupVisible = false;
-        const body = document.body;
-        body.style.height = "100vh"
-        body.style.overflowY = "visible";
+        document.body.style.overflowY = "visible";
       }
     }
   }
@@ -139,4 +131,21 @@
     background-color: #b94f4f;
   }
 
+  html, body{margin: 0; padding: 0;}
+
+  #players-list{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main{
+    padding-left: 15%;
+    padding-right: 15%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header{
+    background-color: #373d47;
+  }
 </style>
