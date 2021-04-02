@@ -7,12 +7,37 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
+<<<<<<< Updated upstream
         <div class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
         <div class = "divider"></div>
         <div class = "section">
           <p>{{name}} vs хз-кто</p>
+=======
+        <div @click="emitShowModal" class = "section">
+          <div style = "display: flex; flex-direction: row; align-items: center;">
+            <img src = "../assets/white.svg">
+            <p>{{name}}[9d]</p>
+          </div>
+          <p>VS</p>
+          <div style = "display: flex; flex-direction: row; align-items: center;">
+            <img src = "../assets/black.svg">
+            <p>Another player[9d]</p>
+          </div>
+        </div>
+        <div class = "divider"></div>
+        <div @click="emitShowModal" class = "section">
+          <div style = "display: flex; flex-direction: row; align-items: center;">
+            <img src = "../assets/white.svg">
+            <p>{{name}}[9d]</p>
+          </div>
+          <p>VS</p>
+          <div style = "display: flex; flex-direction: row; align-items: center;">
+            <img src = "../assets/black.svg">
+            <p>Another player[9d]</p>
+          </div>
+>>>>>>> Stashed changes
         </div>
       </div>
     </div>
@@ -35,6 +60,12 @@ export default{
     methods: {
         show(){
             this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
+<<<<<<< Updated upstream
+=======
+        },
+        emitShowModal(){
+          this.$emit("showModal", this.name)
+>>>>>>> Stashed changes
         }
     }
 }
@@ -115,13 +146,13 @@ export default{
     opacity: 0;
     visibility: hidden;
     height: 0px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     background-color: white;
   }
 
   .dropdown-show{
     height: 50px;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     font-size: 18px;
     color: black;
   }
@@ -136,8 +167,9 @@ export default{
     flex: 1 1 auto;
     background-color: rgba(255, 255, 255, 0.5);
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
   }
 
   .divider{

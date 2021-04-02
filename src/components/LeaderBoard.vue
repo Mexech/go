@@ -1,10 +1,23 @@
 <template>
+<<<<<<< Updated upstream
   <div id = "leaderboard">
     <div id = "header">
       <h1>ТОП 100 ЧЕЛОВ</h1>
     </div>
     <div id = "players-list" v-for="(player, index) in players" :key="index">
       <Player :cls="'i' + (index + 1)" :pos="index + 1" :name="player"/>
+=======
+  <div class="main">
+    <v-popup 
+            v-if="isInfoPopupVisible"
+            @closePopup="closeInfoPopup"
+            :playername="playername"
+    />
+    <h1>ТОП 100 ЧЕЛОВ</h1>
+    <input type = "text" class = "search-form" placeholder = "Search..." v-model="filter" v-on:keydown.enter="filtredPlayers()">
+    <div id = "players-list" v-for="player in filtredPlayers()" :key="player[1]">
+      <Player @showModal="showPopupInfo($event)" :cls="('i' + (player[1] + 1))" :pos="player[1] + 1" :name="player[0]"/>
+>>>>>>> Stashed changes
     </div>
   </div>
 </template>
@@ -20,6 +33,12 @@ export default {
   data() {
     return {
       players: [],
+<<<<<<< Updated upstream
+=======
+      filter: "",
+      isInfoPopupVisible: false,
+      playername: ""
+>>>>>>> Stashed changes
     }
   },
   mounted(){
@@ -43,6 +62,28 @@ export default {
             }
           })
         }
+<<<<<<< Updated upstream
+=======
+      },
+      showPopupInfo(msg) {
+        this.isInfoPopupVisible = true;
+        this.playername=msg
+        document.body.style.overflowY = "hidden";
+      },
+      closeInfoPopup() {
+        this.isInfoPopupVisible = false;
+        document.body.style.overflowY = "visible";
+      },
+      filtredPlayers(){
+        let self = this
+        let filtred = []
+        this.players.forEach(function(el, index){
+          if(el.toLowerCase().includes(self.filter.toLowerCase())){
+            filtred.push([el, index])
+          }
+        })
+        return filtred
+>>>>>>> Stashed changes
       }
     }
   }
@@ -67,4 +108,19 @@ export default {
   #header{
     background-color: #373d47;
   }
+
+  .search-form{
+    width: 15rem; 
+    height: 2rem;
+    font-size: 20px; 
+    border: 3px solid silver; 
+    outline: none; 
+    border-radius: 6px;
+    margin-bottom: 10px;
+
+  }
+
+  /* .search-form:focus{
+    background-color: white;
+  } */
 </style>
