@@ -7,14 +7,6 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
-<<<<<<< Updated upstream
-        <div class = "section">
-          <p>{{name}} vs хз-кто</p>
-        </div>
-        <div class = "divider"></div>
-        <div class = "section">
-          <p>{{name}} vs хз-кто</p>
-=======
         <div @click="emitShowModal" class = "section">
           <div style = "display: flex; flex-direction: row; align-items: center;">
             <img src = "../assets/white.svg">
@@ -37,7 +29,6 @@
             <img src = "../assets/black.svg">
             <p>Another player[9d]</p>
           </div>
->>>>>>> Stashed changes
         </div>
       </div>
     </div>
@@ -60,12 +51,9 @@ export default{
     methods: {
         show(){
             this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
-<<<<<<< Updated upstream
-=======
         },
         emitShowModal(){
           this.$emit("showModal", this.name)
->>>>>>> Stashed changes
         }
     }
 }

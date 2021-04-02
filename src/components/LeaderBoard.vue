@@ -1,12 +1,4 @@
 <template>
-<<<<<<< Updated upstream
-  <div id = "leaderboard">
-    <div id = "header">
-      <h1>ТОП 100 ЧЕЛОВ</h1>
-    </div>
-    <div id = "players-list" v-for="(player, index) in players" :key="index">
-      <Player :cls="'i' + (index + 1)" :pos="index + 1" :name="player"/>
-=======
   <div class="main">
     <v-popup 
             v-if="isInfoPopupVisible"
@@ -17,7 +9,6 @@
     <input type = "text" class = "search-form" placeholder = "Search..." v-model="filter" v-on:keydown.enter="filtredPlayers()">
     <div id = "players-list" v-for="player in filtredPlayers()" :key="player[1]">
       <Player @showModal="showPopupInfo($event)" :cls="('i' + (player[1] + 1))" :pos="player[1] + 1" :name="player[0]"/>
->>>>>>> Stashed changes
     </div>
   </div>
 </template>
@@ -33,12 +24,9 @@ export default {
   data() {
     return {
       players: [],
-<<<<<<< Updated upstream
-=======
       filter: "",
       isInfoPopupVisible: false,
       playername: ""
->>>>>>> Stashed changes
     }
   },
   mounted(){
@@ -62,8 +50,6 @@ export default {
             }
           })
         }
-<<<<<<< Updated upstream
-=======
       },
       showPopupInfo(msg) {
         this.isInfoPopupVisible = true;
@@ -83,7 +69,6 @@ export default {
           }
         })
         return filtred
->>>>>>> Stashed changes
       }
     }
   }
