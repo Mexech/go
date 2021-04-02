@@ -19,10 +19,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import cors_proxy from 'cors-anywhere'
-
-
 export default {
     data() {
         return {
@@ -88,22 +84,12 @@ export default {
                 if (this.currentMove < this.GameMoves.length) {
                     this.currentMove++
                     this.boardArray[move[1]][move[2]] = move[0] //https://www.red-bean.com/sgf/ff5/m_vs_ax.htm
-
-                    var host = process.env.HOST || '0.0.0.0';
-                    var port = process.env.PORT || 8080;
-                    cors_proxy.createServer({
-                        originWhitelist: [], // Allow all origins
-                        requireHeader: ['origin', 'x-requested-with'],
-                        removeHeaders: ['cookie', 'cookie2']
-                    }).listen(port, host, function() {
-                        console.log('Running CORS Anywhere on ' + host + ':' + port);
-                    });
-                    axios.post("https://www.gokgs.com/json-cors/access", {
-                        "type": "LOGIN",
-                        "name": "maximich",
-                        "password": "wqta6v",
-                        "locale": "en_US"
-                    }).then(resp => console.log(resp))
+                    // axios.post("https://www.gokgs.com/json-cors/access", {
+                    //     "type": "LOGIN",
+                    //     "name": "maximich",
+                    //     "password": "wqta6v",
+                    //     "locale": "en_US"
+                    // }).then(resp => console.log(resp))
                     // fetch("https://cors-proxy.htmldriven.com/?url=https://www.gokgs.com/json/access", {
                     //     method:'POST',
                     //     body:{
