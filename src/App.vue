@@ -1,15 +1,17 @@
 <template>
   <LeaderBoard/>
-
+  <!-- <ReplayBoard/> -->
 </template>
 
 <script>
   import LeaderBoard from './components/LeaderBoard.vue'
+  // import ReplayBoard from './components/ReplayBoard.vue'
 
   export default {
     name: 'App',
     components: {
-      LeaderBoard
+      LeaderBoard,
+      // ReplayBoard
     }
   }
 </script>

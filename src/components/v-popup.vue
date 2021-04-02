@@ -5,7 +5,10 @@
       <div id="close_btn" @click="closePopup" class="material-icons-outlined">close</div>
     </div>
     <div class="v-popup__content">
-      <slot></slot>
+      <div>
+        <ReplayBoard/>
+      </div>
+      <!-- <slot></slot> -->
     </div>
     <div class="v-popup__footer"></div>
   </div>
@@ -13,9 +16,14 @@
 </template>
 
 <script>
+  import ReplayBoard from './ReplayBoard.vue'
+
   export default {
     name: "v-popup",
     emits: ['closePopup'],
+    components: {
+      ReplayBoard
+    },
     methods: {
       closePopup() {
         this.$emit('closePopup')
@@ -27,8 +35,8 @@
 <style lang="scss">
   .v-popup {
     padding: 16px;
-    width: 700px;
-    height: 500px;
+    width: 1000px;
+    height: fit-content;
     box-shadow: 0 0 17px 0 #3b414b;
     background: #373d47;
     position: fixed;
