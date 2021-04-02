@@ -15,10 +15,12 @@
 
 <script>
 import Player from "./Player.vue"
+import vPopup from "./v-popup.vue"
 
 export default {
   components: {
-    Player
+    Player,
+    vPopup
   },
   el: "#leaderboard",
   data() {
@@ -33,29 +35,34 @@ export default {
     this.fetchLeaderboard()
   },
   methods: {
-    fetchLeaderboard(){
-      let xhr = new XMLHttpRequest();
-      var self = this;
-      xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
-      xhr.send();
-      xhr.onload = function() {
-        if (xhr.status != 200) { 
-          alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); 
-        } else {
-          const parser = new DOMParser();
-          const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
-          leaderboardDOM.getElementsByTagName('a').forEach((playerEntry) => {
-            if (playerEntry.innerText) {
-              self.players.push(playerEntry.innerText)
-            }
-          })
+     fetchLeaderboard(){
+        let xhr = new XMLHttpRequest();
+        var self = this;
+        xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
+        xhr.send();
+        xhr.onload = function() {
+          if (xhr.status != 200) { 
+            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); 
+          } else {
+            const parser = new DOMParser();
+            const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
+            leaderboardDOM.getElementsByTagName('a').forEach((playerEntry) => {
+              if (playerEntry.innerText) {
+                self.players.push(playerEntry.innerText)
+              }
+            })
+          }
         }
       },
-      showPopupInfo(msg) {
-        this.isInfoPopupVisible = true;
-        this.playername=msg
-        document.body.style.overflowY = "hidden";
+    showPopupInfo(msg){
+      this.isInfoPopupVisible = true;
+      this.playername=msg;
+      document.body.style.overflowY = "hidden";
       },
+     closeInfoPopup() {
+        this.isInfoPopupVisible = false;
+        document.body.style.overflowY = "visible";
+     },
       filtredPlayers(){
         let self = this
         let filtred = []
@@ -68,9 +75,7 @@ export default {
       }
     }
   }
-}
 </script>
-
 <style>
   html, body{margin: 0; padding: 0;}
 
@@ -79,7 +84,7 @@ export default {
     flex-direction: column;
   }
 
-  #leaderboard{
+  .main{
     padding-left: 15%;
     padding-right: 15%;
     display: flex;
