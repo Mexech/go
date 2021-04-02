@@ -6,8 +6,8 @@
             :playername="playername"
     />
     <h1>ТОП 100 ЧЕЛОВ</h1>
-    <input type = "text" class = "search-form" placeholder = "Search..." v-model="filter" v-on:keydown.enter="filtredPlayers()">
-    <div id = "players-list" v-for="player in filtredPlayers()" :key="player[1]">
+    <input type = "text" class = "search-form" placeholder = "Search..." v-model="filter">
+    <div id = "players-list" v-for="player in filtred" :key="player[1]">
       <Player @showModal="showPopupInfo($event)" :cls="('i' + (player[1] + 1))" :pos="player[1] + 1" :name="player[0]"/>
     </div>
   </div>
@@ -62,16 +62,18 @@ export default {
      closeInfoPopup() {
         this.isInfoPopupVisible = false;
         document.body.style.overflowY = "visible";
-     },
-      filtredPlayers(){
+     }
+    },
+    computed: {
+      filtred: function(){
         let self = this
-        let filtred = []
+        let found = []
         this.players.forEach(function(el, index){
           if(el.toLowerCase().includes(self.filter.toLowerCase())){
-            filtred.push([el, index])
+            found.push([el, index])
           }
         })
-        return filtred
+        return found
       }
     }
   }
