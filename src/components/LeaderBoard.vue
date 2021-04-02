@@ -56,10 +56,6 @@ export default {
         this.playername=msg
         document.body.style.overflowY = "hidden";
       },
-      closeInfoPopup() {
-        this.isInfoPopupVisible = false;
-        document.body.style.overflowY = "visible";
-      },
       filtredPlayers(){
         let self = this
         let filtred = []
