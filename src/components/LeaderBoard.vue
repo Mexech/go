@@ -52,11 +52,18 @@ export default {
       },
       showPopupInfo() {
         this.isInfoPopupVisible = true;
-        document.body.style.overflowY = "hidden";
+        const body = document.body;
+        body.style.height = "100vh";
+        let initialWidth = document.body.offsetWidth;
+        body.style.overflowY = "hidden";
+        body.style.paddingRight = (body.offsetWidth - initialWidth) +  'px';
       },
       closeInfoPopup() {
         this.isInfoPopupVisible = false;
-        document.body.style.overflowY = "visible";
+        const body = document.body;
+        body.style.height = "100vh"
+        body.style.overflowY = "visible";
+        body.style.paddingRight = "0";
       }
     }
   }

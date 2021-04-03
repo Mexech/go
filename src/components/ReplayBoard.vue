@@ -1,21 +1,27 @@
 <template>
   <!-- <h1>{{currentMove}}</h1> -->
-  <table class="background">
-      <tr v-for="(row, i) in boardArray.length-1" :key="i">
-          <td style="border: 1px solid black;" v-for="(col, j) in boardArray[i].length-1" :key="j"></td>
-      </tr>
-  </table>
-  <table class="foreground">
-      <tr v-for="(row, i) in boardArray" :key="i">
-            <td v-for="(col, j) in boardArray[i]" :key="j">
-                <!-- {{boardArray[i][j] == 0 ? '+' : boardArray[i][j] == -1 ? 'B' : 'W'}} -->
-                <span class="circle" :class="{black: boardArray[i][j] == -1, white: boardArray[i][j] == 1}">
-                </span>
-            </td>
-      </tr>
-  </table>
-  <button @click="prevMove">Prev Move</button>
-  <button @click="nextMove">Next Move</button>
+  <div class="wrapperBoard">
+    <div class="wrapperGrids">
+          <table class="background">
+              <tr v-for="(row, i) in boardArray.length-1" :key="i">
+                  <td v-for="(col, j) in boardArray[i].length-1" :key="j"></td>
+              </tr>
+          </table>
+          <table class="foreground">
+              <tr v-for="(row, i) in boardArray" :key="i">
+                    <td v-for="(col, j) in boardArray[i]" :key="j">
+                        <!-- {{boardArray[i][j] == 0 ? '+' : boardArray[i][j] == -1 ? 'B' : 'W'}} -->
+                        <span class="circle" :class="{black: boardArray[i][j] == -1, white: boardArray[i][j] == 1}">
+                        </span>
+                    </td>
+              </tr>    
+          </table>
+    </div>
+      <div class="buttonBar">
+            <button @click="prevMove" class="prevBtn"></button>
+            <button @click="nextMove" class="nextBtn"></button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -24,7 +30,7 @@ export default {
         return {
             GameMoves: [],
             currentMove: 0,
-            boardArray: Array.from(Array(19), () => new Array(19).fill(0)),
+            boardArray: Array.from(Array(19 + 1), () => new Array(19 + 1).fill(0)),
             prisonersAtMove: [],
         }
     },
@@ -56,7 +62,7 @@ export default {
                 const dx = [1, 0, -1, 0]
                 const dy = [0, -1, 0, 1]
                 var stack = []
-                var visited = Array.from(Array(19), () => new Array(19).fill(false))
+                var visited = Array.from(Array(19+1), () => new Array(19+1).fill(false))
                 stack.push([move[0], move[1]])
                 // var i = 0 
                 while (stack.length) {
@@ -69,7 +75,7 @@ export default {
                                 let nextValOnBoard = boardArray[node[0]+dx[i]][node[1]+dy[i]]
                                 let currentValOnBoard = boardArray[node[0]][node[1]] 
                                 if (!nextValOnBoard) { //found liberty
-                                    return Array.from(Array(19), () => new Array(19).fill(false))
+                                    return Array.from(Array(19+1), () => new Array(19+1).fill(false))
                                 } else if (nextValOnBoard == currentValOnBoard){
                                     stack.push([node[0] + dx[i], node[1] + dy[i]])
                                 } 
@@ -109,8 +115,8 @@ export default {
                             let prisonedGroup = findPrisonedGroup([x, y], this.boardArray, t)
                             
                             // console.log(`we visited ${[move[1]+dx[i], move[2]+dy[i]]}`)
-                            for (let i = 0; i < prisonedGroup.length; i++) {
-                                for (let j = 0; j < prisonedGroup.length; j++) {
+                            for (let i = 0; i < prisonedGroup.length + 1; i++) {
+                                for (let j = 0; j < prisonedGroup.length + 1; j++) {
                                     if (prisonedGroup[i][j]) {
                                         if (this.boardArray[i][j] != 0) {
                                             let side = move[0]*(i == 4 ? 1 : -1)
@@ -144,40 +150,107 @@ export default {
 </script>
 
 <style lang="scss">
-    td, tr {
-        height: 32px;
+    .nextBtn {
+        border-radius: 30px;
+        background-image: url('../assets/next.svg');
         width: 32px;
-    };
+        height: 32px;
+        background-repeat: no-repeat;
+        background-size: 32px 32px;
+        border: none;
+        outline: none;
+        margin-top: 9px;
+        margin-left: 10px; 
+    }
+
+    .prevBtn {
+        border-radius: 30px;
+        background-image: url('../assets/prev.svg');
+        width: 32px;
+        height: 32px;
+        background-repeat: no-repeat;
+        background-size: 32px 32px;
+        border: none;
+        outline: none;
+        margin-top: 9px;
+        margin-right: 10px;   
+    }
+
+    .prevBtn:hover {
+        filter: brightness(90%);
+    }
+
+    .nextBtn:hover {
+        filter: brightness(90%);
+    }
+
+    .wrapperGrids {
+        margin: 15px;
+    }
+
+    .buttonBar {
+        width: 100%;
+        height: 50px;
+        background: rgba(232, 232, 232, 0.8);
+        border-radius: 0px 0px 26px 26px;
+        justify-content: center;
+    }
+
+    .wrapperBoard {
+        border: 3px solid white;
+        border-radius: 30px;
+        padding: 0;
+        /*background-image: url('../assets/desk.png');
+        background-repeat: no-repeat;
+        background-size: 120% 120%;
+        background-position: 10% 10%;*/
+    }
+
+    td, tr {
+        height: 24px;
+        width: 24px;
+        padding: 0;
+    }
+
     .background {
-        margin-top: 16px;
-        margin-left: 18px;
+        /*отступ в половину размеров td, tr*/
+        margin-left: 12px; 
+        margin-top: 12px;
+        display: block;  
         position: absolute;
         border-collapse: collapse;
         z-index: -1;
         padding: 0;
         td {
-            border: 1px solid black;
+            border: 1px solid rgba(255, 255, 255, 0.75);
         }
-    };
+    }
+
     .foreground {
         border-collapse: collapse;
         padding: 0;
+        margin: 0;
         td {
-            // display: grid;
-            // place-items: center;
+            /*display: grid;*/
+            /*place-items: center;*/
+            /*border: 1px solid green;*/
             border: 1px solid transparent;
         }
-    };
+    }
+
     .circle {
-        height: 24px;
-        width: 24px;
+        height: 20px;
+        width: 20px;
         border-radius: 50%;
         display: inline-block;
+        
     }
     .black {
-        background-color: #000;
+        background: linear-gradient(135deg, #5B5B5B 0%, #272727 100%);
+        /*box-shadow: -5px 5px 10px rgba(25, 25, 25, 0.2), 5px -5px 10px rgba(25, 25, 25, 0.2), -2px -1px 10px rgba(101, 101, 101, 0.5), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(101, 101, 101, 0.45), inset -5px -5px 5px -1px rgba(25, 25, 25, 0.5);*/
     }
     .white {
-        background-color: #fff;
+        background: linear-gradient(135deg, #FFFFFF 0%, #ADA8A8 100%);
+        /*box-shadow: -3px 3px 6px rgba(101, 101, 101, 0.2), 3px -3px 6px rgba(101, 101, 101, 0.2), -2px -2px 10px rgba(255, 255, 255, 0.18), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(255, 255, 255, 0.3), inset -5px -5px 5px -1px rgba(101, 101, 101, 0.5);*/
     }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <div class="v-popup">
     <div class="v-popup__header">
-      <span>Replay</span>
-      <div id="close_btn" @click="closePopup" class="material-icons-outlined">close</div>
+      <span style="float: left">Replay</span>
+      <div id="close_btn" style="float: right;" @click="closePopup" class="material-icons-outlined">close</div>
     </div>
     <div class="v-popup__content">
       <div>
@@ -34,7 +34,7 @@
 
 <style lang="scss">
   .v-popup {
-    padding: 16px;
+    padding: 13px;
     width: 1000px;
     height: fit-content;
     box-shadow: 0 0 17px 0 #3b414b;
