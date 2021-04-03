@@ -125,14 +125,14 @@ export default{
   .dropdown{
     opacity: 0;
     visibility: hidden;
-    height: 0px;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
     background-color: white;
+    height: 0px;
   }
 
   .dropdown-show{
     height: 50px;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
     font-size: 18px;
     color: black;
   }
