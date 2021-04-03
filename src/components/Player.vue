@@ -1,11 +1,11 @@
 <template>
-    <div class = "player-info" v-bind:class="cls" v-on:click="show()">
+    <div class = "player-info" v-bind:class="cls" v-on:click="emitDropdownClick">
         <div style = "width: 50%;">
             <span class="index"> {{pos}} </span>
             <span>{{name}}</span> 
         </div>
     </div>
-    <div v-bind:class="[dynamicCls]">
+    <div v-bind:class="[id == activeItemId ? 'dropdown-show': 'dropdown']">
       <div class = "dropdown-content">
         <div @click="emitShowModal" class = "section">
           <div style = "display: flex; flex-direction: row; align-items: center;">
@@ -38,22 +38,13 @@
 
 export default{
     name: "Player",
-    props: {
-        pos: Number,
-        name: String,
-        cls: String,
-    },
-    data() {
-        return{
-            dynamicCls: "dropdown"
-        }
-    },
+    props: ["pos", "name", "cls", "id", "activeItemId"],
     methods: {
-        show(){
-            this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
-        },
-        emitShowModal(){
+       emitShowModal(){
           this.$emit("showModal", this.name)
+        },
+        emitDropdownClick(){
+          this.$emit("dropdownClick", this.id)
         }
     }
 }

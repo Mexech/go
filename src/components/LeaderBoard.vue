@@ -8,7 +8,7 @@
     <h1>ТОП 100 ЧЕЛОВ</h1>
     <input type = "text" class = "search-form" placeholder = "Search..." v-model="filter">
     <div id = "players-list" v-for="player in filtred" :key="player[1]">
-      <Player @showModal="showPopupInfo($event)" :cls="('i' + (player[1] + 1))" :pos="player[1] + 1" :name="player[0]"/>
+      <Player @dropdownClick="dropdownClickHandler($event)" @showModal="showPopupInfo($event)" :cls="('i' + (player[1] + 1))" :pos="player[1] + 1" :name="player[0]" :id="player[1] + 1" :activeItemId="activeItemId"/>
     </div>
   </div>
 </template>
@@ -28,7 +28,8 @@ export default {
       players: [],
       filter: "",
       isInfoPopupVisible: false,
-      playername: ""
+      playername: "",
+      activeItemId: undefined
     }
   },
   mounted(){
@@ -62,6 +63,13 @@ export default {
      closeInfoPopup() {
         this.isInfoPopupVisible = false;
         document.body.style.overflowY = "visible";
+     },
+     dropdownClickHandler(id){
+       if(this.activeItemId == id){
+         this.activeItemId = undefined
+       }else{
+         this.activeItemId = id
+       }
      }
     },
     computed: {
