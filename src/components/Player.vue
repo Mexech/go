@@ -39,6 +39,7 @@
 export default{
     name: "Player",
     props: ["pos", "name", "cls", "id", "activeItemId"],
+    emits: ['showModal', 'dropdownClick'],
     methods: {
        emitShowModal(){
           this.$emit("showModal", this.name)
@@ -125,13 +126,13 @@ export default{
     opacity: 0;
     visibility: hidden;
     height: 0px;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     background-color: white;
   }
 
   .dropdown-show{
     height: 50px;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     font-size: 18px;
     color: black;
   }
