@@ -87,57 +87,6 @@ export default {
     cursor: pointer;
   }
 
-  .index {
-    margin: 0 20px 0 20px;
-    color: rgb(178, 114, 119);
-    border-radius: 20px;
-    background-color: white;
-    padding-right: 0px;
-    padding-left: 5px;
-    user-select: none;
-  }
-
-  .i1 {
-    background-color: #db705b;
-  }
-
-  .i1:hover {
-    background-color: #df735f;
-  }
-
-  .i2 {
-    background-color: #d16155;
-  }
-
-  .i2:hover {
-    background-color: #d36357;
-  }
-
-  .i3 {
-    background-color: #c85952;
-  }
-
-  .i3:hover {
-    background-color: #ca5b54;
-  }
-
-  .i4 {
-    background-color: #c0544e;
-  }
-
-  .i4:hover {
-    background-color: #c3574f;
-  }
-
-  .i5 {
-    background-color: #b44c4c;
-    border-radius: 0 0 10px 10px;
-  }
-
-  .i5:hover {
-    background-color: #b94f4f;
-  }
-
   html, body{margin: 0; padding: 0;}
 
   #players-list{

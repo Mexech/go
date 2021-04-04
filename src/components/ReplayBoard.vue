@@ -30,7 +30,7 @@ export default {
         return {
             GameMoves: [],
             currentMove: 0,
-            boardArray: Array.from(Array(19 + 1), () => new Array(19 + 1).fill(0)),
+            boardArray: Array.from(Array(19), () => new Array(19).fill(0)),
             prisonersAtMove: [],
         }
     },
@@ -191,7 +191,7 @@ export default {
     .buttonBar {
         width: 100%;
         height: 50px;
-        background: rgba(232, 232, 232, 0.8);
+        background: rgba(232, 232, 232, 0.9);
         border-radius: 0px 0px 26px 26px;
         justify-content: center;
     }
@@ -243,14 +243,13 @@ export default {
         width: 20px;
         border-radius: 50%;
         display: inline-block;
-        
     }
     .black {
         background: linear-gradient(135deg, #5B5B5B 0%, #272727 100%);
-        /*box-shadow: -5px 5px 10px rgba(25, 25, 25, 0.2), 5px -5px 10px rgba(25, 25, 25, 0.2), -2px -1px 10px rgba(101, 101, 101, 0.5), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(101, 101, 101, 0.45), inset -5px -5px 5px -1px rgba(25, 25, 25, 0.5);*/
+        box-shadow: -5px 5px 10px rgba(25, 25, 25, 0.2), 5px -5px 10px rgba(25, 25, 25, 0.2), -2px -1px 10px rgba(101, 101, 101, 0.5), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(101, 101, 101, 0.45), inset -5px -5px 5px -1px rgba(25, 25, 25, 0.5);
     }
     .white {
         background: linear-gradient(135deg, #FFFFFF 0%, #ADA8A8 100%);
-        /*box-shadow: -3px 3px 6px rgba(101, 101, 101, 0.2), 3px -3px 6px rgba(101, 101, 101, 0.2), -2px -2px 10px rgba(255, 255, 255, 0.18), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(255, 255, 255, 0.3), inset -5px -5px 5px -1px rgba(101, 101, 101, 0.5);*/
+        box-shadow: -3px 3px 6px rgba(101, 101, 101, 0.2), 3px -3px 6px rgba(101, 101, 101, 0.2), -2px -2px 10px rgba(255, 255, 255, 0.18), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(255, 255, 255, 0.3), inset -5px -5px 5px -1px rgba(101, 101, 101, 0.5);
     }
 </style>
