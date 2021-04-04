@@ -14,41 +14,59 @@
             </td>
       </tr>
   </table>
-  <button @click="prevMove">Prev Move</button>
-  <button @click="nextMove">Next Move</button>
+  <button v-if="!loading" @click="prevMove">Prev Move</button>
+  <button v-if="!loading" @click="nextMove">Next Move</button>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
+    props: {
+        username: String,
+        number: Number
+    },
     data() {
         return {
             GameMoves: [],
             currentMove: 0,
             boardArray: Array.from(Array(19), () => new Array(19).fill(0)),
             prisonersAtMove: [],
+            loading: false
         }
     },
     mounted() {
-        let xhr = new XMLHttpRequest()
+        // let xhr = new XMLHttpRequest()
         var self = this
-        xhr.open('GET', 'https://cors-anywhere.herokuapp.com/http://files.gokgs.com/games/2021/1/26/larc-HiraBot44.sgf');
-        xhr.send()
-        xhr.onload = function() {
-            if (xhr.status != 200) { 
-            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`)
-            } else {
-                var data = xhr.response
-                data = data.split(';')
-                data.shift()
-                const matchInfo = data.shift()
-                console.log(matchInfo)
-                for (let rawMove of data) {
-                    var rawCoord = rawMove.slice(rawMove.indexOf('[')+1, rawMove.indexOf(']'))
-                    self.GameMoves.push([rawMove[0] == 'W' ? 1 : -1, rawCoord.charCodeAt(1) - 97, rawCoord.charCodeAt(0) - 97])
-                }
-                self.prisonersAtMove = Array.from(Array(self.GameMoves.length+1), () => new Array().fill())
-            }
-        }
+        console.log(this.username)
+        this.loading = true
+        axios.get(`http://localhost:3000/moves/${this.username}/${this.number}`).then(res => {
+            self.GameMoves = res.data.moves
+            // for (let rawMove of data) {
+            //     var rawCoord = rawMove.slice(rawMove.indexOf('[')+1, rawMove.indexOf(']'))
+            //     self.GameMoves.push([rawMove[0] == 'W' ? 1 : -1, rawCoord.charCodeAt(1) - 97, rawCoord.charCodeAt(0) - 97])
+            // }
+            self.prisonersAtMove = Array.from(Array(self.GameMoves.length+1), () => new Array().fill())
+            self.loading = false
+        })
+        // xhr.open('GET', 'https://cors-anywhere.herokuapp.com/http://files.gokgs.com/games/2021/1/26/larc-HiraBot44.sgf');
+        // xhr.send()
+        // xhr.onload = function() {
+        //     if (xhr.status != 200) { 
+        //     alert(`Ошибка ${xhr.status}: ${xhr.statusText}`)
+        //     } else {
+        //         var data = xhr.response
+        //         data = data.split(';')
+        //         data.shift()
+        //         const matchInfo = data.shift()
+        //         console.log(matchInfo)
+        //         for (let rawMove of data) {
+        //             var rawCoord = rawMove.slice(rawMove.indexOf('[')+1, rawMove.indexOf(']'))
+        //             self.GameMoves.push([rawMove[0] == 'W' ? 1 : -1, rawCoord.charCodeAt(1) - 97, rawCoord.charCodeAt(0) - 97])
+        //         }
+        //         self.prisonersAtMove = Array.from(Array(self.GameMoves.length+1), () => new Array().fill())
+        //     }
+        // }
     },
     methods: {
         nextMove() {

@@ -1,12 +1,19 @@
 <template>
   <div class="main">
     <v-popup 
-            v-if="isInfoPopupVisible"
-            @closePopup="closeInfoPopup"
+      v-if="isInfoPopupVisible"
+      @closePopup="closeInfoPopup"
+      :username="currentPlayer"
+      :number="gameNumber"
     />
     <h1>ТОП 100 ЧЕЛОВ</h1>
     <div id = "players-list" v-for="(player, index) in players" :key="index">
-      <Player @showModal="showPopupInfo"  :cls="'i' + (index + 1)" :pos="index + 1" :name="player"/>
+      <Player 
+        @showModal="showPopupInfo"  
+        @currentPlayerChanged="setCurrentPlayer"
+        :cls="'i' + (index + 1)" 
+        :pos="index + 1" 
+        :name="player"/>
     </div>
   </div>
 </template>
@@ -14,6 +21,8 @@
 <script>
 import Player from "./Player.vue"
 import vPopup from "./v-popup.vue"
+import axios from 'axios'
+
 
 export default {
   components: {
@@ -24,6 +33,8 @@ export default {
   data() {
     return {
       players: [],
+      currentPlayer: "",
+      gameNumber: 0,
       isInfoPopupVisible: false
     }
   },
@@ -32,31 +43,22 @@ export default {
   },
   methods: {
       fetchLeaderboard(){
-        let xhr = new XMLHttpRequest();
         var self = this;
-        xhr.open('GET', 'https://cors-anywhere.herokuapp.com/https://www.gokgs.com/top100.jsp');
-        xhr.send();
-        xhr.onload = function() {
-          if (xhr.status != 200) { 
-            alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); 
-          } else {
-            const parser = new DOMParser();
-            const leaderboardDOM = parser.parseFromString(xhr.response, "text/html")
-            leaderboardDOM.getElementsByTagName('a').forEach((playerEntry) => {
-              if (playerEntry.innerText) {
-                self.players.push(playerEntry.innerText)
-              }
-            })
-          }
-        }
+        axios.get(`http://localhost:3000/leaderboard`).then((response) => {
+          self.players = response.data.players
+        })
       },
-      showPopupInfo() {
+      showPopupInfo(number) {
+        this.gameNumber = number
         this.isInfoPopupVisible = true;
         document.body.style.overflowY = "hidden";
       },
       closeInfoPopup() {
         this.isInfoPopupVisible = false;
         document.body.style.overflowY = "visible";
+      },
+      setCurrentPlayer(username) {
+        this.currentPlayer = username
       }
     }
   }

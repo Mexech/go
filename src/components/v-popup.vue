@@ -1,12 +1,12 @@
 <template>
   <div class="v-popup">
     <div class="v-popup__header">
-      <span>Replay</span>
+      <span>Replay game #{{number}}</span>
       <div id="close_btn" @click="closePopup" class="material-icons-outlined">close</div>
     </div>
     <div class="v-popup__content">
       <div>
-        <ReplayBoard/>
+        <ReplayBoard :number="this.number" :username="this.username"/>
       </div>
       <!-- <slot></slot> -->
     </div>
@@ -20,6 +20,10 @@
 
   export default {
     name: "v-popup",
+    props: {
+      username: String,
+      number: Number,
+    },
     emits: ['closePopup'],
     components: {
       ReplayBoard

@@ -7,11 +7,11 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
-        <div @click="emitShowModal" class = "section">
+        <div @click="emitShowModal(0)" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
         <div class = "divider"></div>
-        <div @click="emitShowModal" class = "section">
+        <div @click="emitShowModal(1)" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
       </div>
@@ -19,10 +19,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default{
     name: "Player",
-    emits: ['showModal'],
+    emits: ['showModal', 'currentPlayerChanged'],
     props: {
         pos: Number,
         name: String,
@@ -35,10 +36,14 @@ export default{
     },
     methods: {
         show(){
-            this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
+          this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
+          this.$emit('currentPlayerChanged', this.name)
+          axios.get(`http://localhost:3000/archive/${this.name}`).then((response) => {
+            console.log(response.data)
+          })
         },
-        emitShowModal(){
-          this.$emit("showModal")
+        emitShowModal(number){
+          this.$emit("showModal", number)
         }
     }
 }
