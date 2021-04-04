@@ -53,7 +53,7 @@ app.get('/archive/:username', async (req, res) => {
   const username = req.params.username
   let foundArchive = false
   loadedArchives.forEach(async (archive) => {
-    console.log(Object.keys(archive)[0])
+    // console.log(Object.keys(archive)[0])
     if (username == Object.keys(archive)[0]) {
       foundArchive = true
       res.send({
@@ -89,7 +89,9 @@ app.get('/moves/:username/:number', async (req, res) => {
       "private": "true",
       "channelId": channelId
     })
-    const r = await axiosInstance.get() 
+    const sleep = m => new Promise(r => setTimeout(r, m))
+    await sleep(50)
+    const r = await axiosInstance.get()
     r.data.messages.forEach(message => {
       if (message?.type == 'GAME_JOIN'){
         message.sgfEvents.forEach(ev => {
@@ -99,7 +101,6 @@ app.get('/moves/:username/:number', async (req, res) => {
             moves.push([color=='white' ? 1 : -1, coords.y, coords.x])
           } 
         })
-        console.log(message)//TODO returns first move set empty!!!
       }
     })
     return moves 
@@ -119,12 +120,11 @@ app.get('/moves/:username/:number', async (req, res) => {
   //   "name": username
   // })
   // response = await axiosInstance.get()
-  console.log(loadedArchives)
+  // console.log(loadedArchives)
   loadedArchives.forEach(async (archive) => {
     if (Object.keys(archive)[0] == username) {
       let timestamp = Object.values(archive)[0][number].timestamp
       const moves = await fetchGame(timestamp, channelId)
-      console.log(moves)
       res.send({
         moves: moves
       })

@@ -7,11 +7,11 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
-        <div @click="emitShowModal(0)" class = "section">
+        <div v-if="!loading" @click="emitShowModal(0)" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
         <div class = "divider"></div>
-        <div @click="emitShowModal(1)" class = "section">
+        <div v-if="!loading" @click="emitShowModal(1)" class = "section">
           <p>{{name}} vs хз-кто</p>
         </div>
       </div>
@@ -31,6 +31,7 @@ export default{
     },
     data() {
         return{
+            loading: false,
             dynamicCls: "dropdown"
         }
     },
@@ -38,8 +39,9 @@ export default{
         show(){
           this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
           this.$emit('currentPlayerChanged', this.name)
-          axios.get(`http://localhost:3000/archive/${this.name}`).then((response) => {
-            console.log(response.data)
+          this.loading = true
+          axios.get(`http://localhost:3000/archive/${this.name}`).then(() => {
+            this.loading = false
           })
         },
         emitShowModal(number){
