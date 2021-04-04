@@ -83,6 +83,7 @@ export default{
 
   .i1{
     background-color: #db705b;
+    border-radius: 10px 10px 0 0;
   }
 
   .i1:hover{
@@ -115,11 +116,14 @@ export default{
 
   .i5{
     background-color: #b44c4c;
-    /* border-radius: 0 0 10px 10px; */
   }
 
   .i5:hover{
     background-color: #b94f4f;
+  }
+
+  .i100{
+    border-radius: 0 0 10px 10px;
   }
 
   .dropdown{
@@ -151,9 +155,14 @@ export default{
     justify-content: center;
   }
 
+  .section:hover{
+    background-color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+  }
+
   .divider{
     height: 50px;
     width: 1.6px;
-    background-color: silver;
+    background-color: #373d47;
   }
 </style>
