@@ -7,13 +7,15 @@
       :number="gameNumber"
     />
     <h1>ТОП 100 ЧЕЛОВ</h1>
-    <div id = "players-list" v-for="(player, index) in players" :key="index">
-      <Player 
-        @showModal="showPopupInfo"  
-        @currentPlayerChanged="setCurrentPlayer"
-        :cls="'i' + (index + 1)" 
-        :pos="index + 1" 
-        :name="player"/>
+    <div id = "players-list">
+      <div v-for="(player, index) in players" :key="index">
+        <Player 
+          @showModal="showPopupInfo"  
+          @currentPlayerChanged="setCurrentPlayer"
+          :cls="'i' + (index + 1)" 
+          :pos="index + 1" 
+          :name="player"/>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +93,8 @@ export default {
   #players-list{
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    border-radius: 10px; 
   }
 
   .main{

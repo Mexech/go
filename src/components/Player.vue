@@ -7,13 +7,15 @@
     </div>
     <div v-bind:class="[dynamicCls]">
       <div class = "dropdown-content">
-        <div v-if="!loading" @click="emitShowModal(0)" class = "section">
-          <p>{{name}} vs хз-кто</p>
+        <div class="container">
+          <div v-for="index in 2" :key="index" @click="emitShowModal(index)" class = "section">
+            <p>{{games?.[index]?.players?.black?.name}} vs {{games?.[index]?.players?.white?.name}}</p>
+          </div>
         </div>
-        <div class = "divider"></div>
+        <!-- <div class = "divider"></div>
         <div v-if="!loading" @click="emitShowModal(1)" class = "section">
-          <p>{{name}} vs хз-кто</p>
-        </div>
+          <p>{{games[1].players.black.name}} vs {{games[1].players.white.name}}</p>
+        </div> -->
       </div>
     </div>
 </template>
@@ -32,7 +34,8 @@ export default{
     data() {
         return{
             loading: false,
-            dynamicCls: "dropdown"
+            dynamicCls: "dropdown",
+            games: []
         }
     },
     methods: {
@@ -40,8 +43,10 @@ export default{
           this.dynamicCls == "dropdown" ? this.dynamicCls = "dropdown-show": this.dynamicCls = "dropdown"
           this.$emit('currentPlayerChanged', this.name)
           this.loading = true
-          axios.get(`http://localhost:3000/archive/${this.name}`).then(() => {
+          axios.get(`http://localhost:3000/archive/${this.name}`).then((response) => {
             this.loading = false
+            this.games = response.data.games
+            console.log(response.data.games[0].players.black.name)
           })
         },
         emitShowModal(number){
@@ -83,7 +88,6 @@ export default{
 
   .i1{
     background-color: #db705b;
-    border-radius: 10px 10px 0 0;
   }
 
   .i1:hover{
@@ -122,10 +126,6 @@ export default{
     background-color: #b94f4f;
   }
 
-  .i100{
-    border-radius: 0 0 10px 10px;
-  }
-
   .dropdown{
     opacity: 0;
     visibility: hidden;
@@ -147,10 +147,17 @@ export default{
     flex-direction: row;
   }
 
+  .container {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+  }
+
   .section{
-    flex: 1 1 auto;
+    /* flex: 1 1 auto; */
     background-color: rgba(255, 255, 255, 0.5);
     display: flex;
+    flex-grow: 1;
     align-items: center;
     justify-content: center;
   }

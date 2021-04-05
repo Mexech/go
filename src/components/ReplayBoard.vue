@@ -141,8 +141,8 @@ export default {
                             let prisonedGroup = findPrisonedGroup([x, y], this.boardArray, t)
                             
                             // console.log(`we visited ${[move[1]+dx[i], move[2]+dy[i]]}`)
-                            for (let i = 0; i < prisonedGroup.length + 1; i++) {
-                                for (let j = 0; j < prisonedGroup.length + 1; j++) {
+                            for (let i = 0; i < prisonedGroup.length; i++) {
+                                for (let j = 0; j < prisonedGroup.length; j++) {
                                     if (prisonedGroup[i][j]) {
                                         if (this.boardArray[i][j] != 0) {
                                             let side = move[0]*(i == 4 ? 1 : -1)
