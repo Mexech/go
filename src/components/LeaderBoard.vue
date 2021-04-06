@@ -6,15 +6,16 @@
       :username="currentPlayer"
       :number="gameNumber"
     />
-    <h1>ТОП 100 ЧЕЛОВ</h1>
+    <h1>ТОП 100 ИГРОКОВ</h1>
     <div id = "players-list">
       <div v-for="(player, index) in players" :key="index">
-        <Player 
+        <Player
           @showModal="showPopupInfo"  
           @currentPlayerChanged="setCurrentPlayer"
           :cls="'i' + (index + 1)" 
           :pos="index + 1" 
-          :name="player"/>
+          :name="player"
+          :currentPlayer="currentPlayer"/>
       </div>
     </div>
   </div>
@@ -93,7 +94,7 @@ export default {
   #players-list{
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    /* overflow: hidden; */
     border-radius: 10px; 
   }
 

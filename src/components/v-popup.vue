@@ -1,17 +1,17 @@
 <template>
   <div class="modal">
   <div class="v-popup">
-    <div class="v-popup__header">
-      <span>Replay game #{{number}}</span>
+    <!-- <div class="v-popup __header">
+      <a>Replay game #{{number+1}}</a>
       <div id="close_btn" style="float: right;" @click="closePopup" class="material-icons-outlined">close</div>
-    </div>
-    <div class="v-popup__content">
+    </div> -->
+    <div class="v-popup __content">
       <div>
         <ReplayBoard :number="this.number" :username="this.username"/>
       </div>
       <!-- <slot></slot> -->
     </div>
-    <div class="v-popup__footer"></div>
+    <div class="v-popup __footer"></div>
   </div>
   <div id="bg_layer" @click="closePopup"></div>
   </div>
@@ -40,8 +40,8 @@
 
 <style lang="scss">
   .v-popup {
-    padding: 13px;
-    width: 1000px;
+    // padding: 13px;
+    width: fit-content;
     height: fit-content;
     box-shadow: 0 0 17px 0 #3b414b;
     background: #3f444f;
@@ -52,7 +52,7 @@
     left: 0;
     margin: auto;
     z-index: 20;
-    border-radius: 10px;
+    border-radius: 40px;
 
     &__header, &__footer {
       display: flex;

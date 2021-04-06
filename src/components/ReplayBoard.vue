@@ -1,21 +1,6 @@
 <template>
-  <!-- <h1>{{currentMove}}</h1> -->
-  <!-- <table class="background">
-      <tr v-for="(row, i) in boardArray.length-1" :key="i">
-          <td style="border: 1px solid black;" v-for="(col, j) in boardArray[i].length-1" :key="j"></td>
-      </tr>
-  </table>
-  <table class="foreground">
-      <tr v-for="(row, i) in boardArray" :key="i">
-            <td v-for="(col, j) in boardArray[i]" :key="j">
-                <span class="circle" :class="{black: boardArray[i][j] == -1, white: boardArray[i][j] == 1}">
-                </span>
-            </td>
-      </tr>
-  </table>
-  <button v-if="!loading" @click="prevMove">Prev Move</button>
-  <button v-if="!loading" @click="nextMove">Next Move</button> -->
   <div class="wrapperBoard">
+    <span class="current-move" v-if="currentMove">Ход {{currentMove}}</span>
     <div class="wrapperGrids">
           <table class="background">
               <tr v-for="(row, i) in boardArray.length-1" :key="i">
@@ -32,19 +17,25 @@
               </tr>    
           </table>
     </div>
-      <div class="buttonBar">
-            <button @click="prevMove" class="prevBtn"></button>
-            <button @click="nextMove" class="nextBtn"></button>
+    <div class="buttonBar">
+        <button v-if="!loading" @click="prevMove" class="prev btn"></button>
+        <button v-if="!loading" @click="nextMove" class="next btn"></button>
+        <loader class="center" v-else/>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import loader from './pulsatingLoader.vue'
+
 export default {
     props: {
         username: String,
         number: Number
+    },
+    components: {
+      loader,
     },
     data() {
         return {
@@ -56,37 +47,13 @@ export default {
         }
     },
     mounted() {
-        // let xhr = new XMLHttpRequest()
         var self = this
-        console.log(this.username)
         this.loading = true
         axios.get(`http://localhost:3000/moves/${this.username}/${this.number}`).then(res => {
             self.GameMoves = res.data.moves
-            // for (let rawMove of data) {
-            //     var rawCoord = rawMove.slice(rawMove.indexOf('[')+1, rawMove.indexOf(']'))
-            //     self.GameMoves.push([rawMove[0] == 'W' ? 1 : -1, rawCoord.charCodeAt(1) - 97, rawCoord.charCodeAt(0) - 97])
-            // }
             self.prisonersAtMove = Array.from(Array(self.GameMoves.length+1), () => new Array().fill())
             self.loading = false
         })
-        // xhr.open('GET', 'https://cors-anywhere.herokuapp.com/http://files.gokgs.com/games/2021/1/26/larc-HiraBot44.sgf');
-        // xhr.send()
-        // xhr.onload = function() {
-        //     if (xhr.status != 200) { 
-        //     alert(`Ошибка ${xhr.status}: ${xhr.statusText}`)
-        //     } else {
-        //         var data = xhr.response
-        //         data = data.split(';')
-        //         data.shift()
-        //         const matchInfo = data.shift()
-        //         console.log(matchInfo)
-        //         for (let rawMove of data) {
-        //             var rawCoord = rawMove.slice(rawMove.indexOf('[')+1, rawMove.indexOf(']'))
-        //             self.GameMoves.push([rawMove[0] == 'W' ? 1 : -1, rawCoord.charCodeAt(1) - 97, rawCoord.charCodeAt(0) - 97])
-        //         }
-        //         self.prisonersAtMove = Array.from(Array(self.GameMoves.length+1), () => new Array().fill())
-        //     }
-        // }
     },
     methods: {
         nextMove() {
@@ -94,7 +61,7 @@ export default {
                 const dx = [1, 0, -1, 0]
                 const dy = [0, -1, 0, 1]
                 var stack = []
-                var visited = Array.from(Array(19+1), () => new Array(19+1).fill(false))
+                var visited = Array.from(Array(19), () => new Array(19).fill(false))
                 stack.push([move[0], move[1]])
                 // var i = 0 
                 while (stack.length) {
@@ -102,16 +69,20 @@ export default {
                     if (visited[node[0]][node[1]] == false) {
                         visited[node[0]][node[1]] = true
                         for (let i = 0; i < 4; i++) {
-                            if ((0 <= node[0] + dx[i] && node[0] + dx[i] < visited.length) && 
-                               (0 <= node[1] + dy[i] && node[1] + dy[i] < visited.length)) {
-                                let nextValOnBoard = boardArray[node[0]+dx[i]][node[1]+dy[i]]
-                                let currentValOnBoard = boardArray[node[0]][node[1]] 
-                                if (!nextValOnBoard) { //found liberty
-                                    return Array.from(Array(19+1), () => new Array(19+1).fill(false))
-                                } else if (nextValOnBoard == currentValOnBoard){
-                                    stack.push([node[0] + dx[i], node[1] + dy[i]])
+                            try {
+                                if ((0 <= node[0] + dx[i] && node[0] + dx[i] < visited.length) && 
+                                   (0 <= node[1] + dy[i] && node[1] + dy[i] < visited.length)) {
+                                    let nextValOnBoard = boardArray[node[0]+dx[i]][node[1]+dy[i]]
+                                    let currentValOnBoard = boardArray[node[0]][node[1]] 
+                                    if (!nextValOnBoard) { //found liberty
+                                        return Array.from(Array(19), () => new Array(19).fill(false))
+                                    } else if (nextValOnBoard == currentValOnBoard){
+                                        stack.push([node[0] + dx[i], node[1] + dy[i]])
+                                    } 
                                 } 
-                            } 
+                            } catch(error) {
+                                console.log(node[0]+dx[i], node[1]+dy[i])
+                            }
                         }
                     }
                 }
@@ -176,33 +147,25 @@ export default {
 </script>
 
 <style lang="scss">
-    .nextBtn {
+    .btn {
         border-radius: 30px;
-        background-image: url('../assets/next.svg');
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         background-repeat: no-repeat;
-        background-size: 32px 32px;
+        background-size: 40px 40px;
         border: none;
         outline: none;
-        margin-top: 9px;
-        margin-left: 10px; 
+        margin-top: 6px;
+        margin-left: 10px;
+        &.next {
+            background-image: url('../assets/next.svg');
+        }
+        &.prev {
+            background-image: url('../assets/prev.svg');
+        }
     }
 
-    .prevBtn {
-        border-radius: 30px;
-        background-image: url('../assets/prev.svg');
-        width: 32px;
-        height: 32px;
-        background-repeat: no-repeat;
-        background-size: 32px 32px;
-        border: none;
-        outline: none;
-        margin-top: 9px;
-        margin-right: 10px;   
-    }
-
-    .prevBtn:hover {
+    .btn:hover {
         filter: brightness(90%);
     }
 
@@ -233,15 +196,15 @@ export default {
     }
 
     td, tr {
-        height: 24px;
-        width: 24px;
+        height: 40px;
+        width: 40px;
         padding: 0;
     }
 
     .background {
         /*отступ в половину размеров td, tr*/
-        margin-left: 12px; 
-        margin-top: 12px;
+        margin-left: 20px; 
+        margin-top: 20px;
         display: block;  
         position: absolute;
         border-collapse: collapse;
@@ -257,25 +220,37 @@ export default {
         padding: 0;
         margin: 0;
         td {
-            /*display: grid;*/
-            /*place-items: center;*/
-            /*border: 1px solid green;*/
             border: 1px solid transparent;
         }
     }
 
     .circle {
-        height: 20px;
-        width: 20px;
+        height: 30px;
+        width: 30px;
         border-radius: 50%;
         display: inline-block;
     }
     .black {
-        background: linear-gradient(135deg, #5B5B5B 0%, #272727 100%);
-        box-shadow: -5px 5px 10px rgba(25, 25, 25, 0.2), 5px -5px 10px rgba(25, 25, 25, 0.2), -2px -1px 10px rgba(101, 101, 101, 0.5), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(101, 101, 101, 0.45), inset -5px -5px 5px -1px rgba(25, 25, 25, 0.5);
+        background: #272727;
+        // background: linear-gradient(135deg, #5B5B5B 0%, #272727 100%);
+        // box-shadow: -5px 5px 10px rgba(25, 25, 25, 0.2), 5px -5px 10px rgba(25, 25, 25, 0.2), -2px -1px 10px rgba(101, 101, 101, 0.5), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(101, 101, 101, 0.45), inset -5px -5px 5px -1px rgba(25, 25, 25, 0.5);
     }
     .white {
-        background: linear-gradient(135deg, #FFFFFF 0%, #ADA8A8 100%);
-        box-shadow: -3px 3px 6px rgba(101, 101, 101, 0.2), 3px -3px 6px rgba(101, 101, 101, 0.2), -2px -2px 10px rgba(255, 255, 255, 0.18), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(255, 255, 255, 0.3), inset -5px -5px 5px -1px rgba(101, 101, 101, 0.5);
+        background: #FFFFFF;
+        // background: linear-gradient(135deg, #FFFFFF 0%, #ADA8A8 100%);
+        // box-shadow: -3px 3px 6px rgba(101, 101, 101, 0.2), 3px -3px 6px rgba(101, 101, 101, 0.2), -2px -2px 10px rgba(255, 255, 255, 0.18), 5px 5px 13px rgba(25, 25, 25, 0.9), inset 5px 5px 5px -1px rgba(255, 255, 255, 0.3), inset -5px -5px 5px -1px rgba(101, 101, 101, 0.5);
+    }
+    .center {
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+    }
+    .current-move{
+        position:absolute;
+        font-size: 2rem;
+        left: 0; 
+        right: 0; 
+        margin-left: auto; 
+        margin-right: auto; 
     }
 </style>
